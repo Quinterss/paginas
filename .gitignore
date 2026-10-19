@@ -13,3 +13,6 @@ Desktop.ini
 
 # Dependencias
 node_modules/
+
+.vercel
+.env*
