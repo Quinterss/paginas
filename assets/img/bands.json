@@ -1,0 +1,26 @@
+﻿[
+    {
+        "archivo":  "ficha.jpg",
+        "titulo":  "File:Toyota forklift.jpg",
+        "autor":  "No machine-readable author provided. Dbenbenn assumed (based on copyright claims).",
+        "licencia":  "CC BY-SA 3.0",
+        "fuente":  "https://commons.wikimedia.org/wiki/File:Toyota_forklift.jpg",
+        "descripcion":  "A Toyota forklift . The forks are 6 feet long. The three handles near the steering wheel control, from left, up/down, tilt forward/backward, and shift left/right. The brake pedal is especially wide. It\u0027s designed to be used by either foot. When raising a heavy load, one brakes with the left foot while applying gas with the right. The forklift runs on either gasoline or propane. The gas cap is visible over the rear wheel. The curved structure in the back is for holding a propane tank. The rear wheels turn, not the front ones. David Benbennick took this photo on June 15, 2005 at 2:21 PM (20:21 UTC). This is one of two forklifts I drive at work.",
+        "ancho":  1400,
+        "alto":  1050,
+        "bytes":  699587,
+        "jpegValido":  true
+    },
+    {
+        "archivo":  "banda-servicios.jpg",
+        "titulo":  "File:Forklift.jpeg",
+        "autor":  "Mdornseif",
+        "licencia":  "CC BY-SA 4.0",
+        "fuente":  "https://commons.wikimedia.org/wiki/File:Forklift.jpeg",
+        "descripcion":  "Forklifts in Warehouse. To the right a 2t forklift fitted for road use, to the right a 3t model fitted for extended outdoor use. Picture taken at a Warehouse of HUDORA GmbH, Germany.",
+        "ancho":  1400,
+        "alto":  1050,
+        "bytes":  559989,
+        "jpegValido":  true
+    }
+]
