@@ -1,239 +1,163 @@
-/* Montacargas del Plata — pestañas, fondo animado y formulario. */
+/* Montacargas del Plata — contacto, fondo animado y reacciones al mouse. */
 (function () {
   "use strict";
 
   var WHATSAPP_NUMBER = "5491140000000"; // ← reemplazar por el número real (formato internacional, sin +)
+  var MENSAJE = "Hola, quiero cotizar un alquiler de montacargas.";
 
-  /* ============================ PESTAÑAS ============================ */
+  var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var hasIO = "IntersectionObserver" in window;
 
-  var TABS = ["inicio", "servicios", "flota", "cobertura", "contacto"];
-  // Enlaces viejos o atajos que deben abrir una pestaña concreta.
-  var ALIAS = { faq: "contacto", cotizar: "contacto", contacto: "contacto", inicio: "inicio" };
+  /* ============================ CONTACTO ============================ */
+  // Un solo número para todos los botones "Cotizar".
+  var quoteUrl = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(MENSAJE);
+  $$("[data-quote]").forEach(function (a) { a.href = quoteUrl; a.target = "_blank"; a.rel = "noopener"; });
 
-  var tablist = document.querySelector('[role="tablist"]');
-  var tabs = tablist ? Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]')) : [];
-  var panels = tabs.map(function (tab) {
-    return document.getElementById(tab.getAttribute("aria-controls"));
-  });
-
-  function indexOfTab(name) {
-    return TABS.indexOf(name);
-  }
-
-  function activate(name, options) {
-    var opts = options || {};
-    var index = indexOfTab(name);
-    if (index < 0) return;
-
-    tabs.forEach(function (tab, i) {
-      var selected = i === index;
-      tab.setAttribute("aria-selected", selected ? "true" : "false");
-      tab.tabIndex = selected ? 0 : -1;
-      if (panels[i]) panels[i].hidden = !selected;
-    });
-
-    // Las imágenes con loading="lazy" dentro de un panel que arranca en
-    // display:none nunca empiezan a cargar cuando la pestaña se abre: el
-    // heurístico de lazy-loading no las re-evalúa. Forzamos la carga al activar.
-    var opened = panels[index];
-    if (opened) {
-      Array.prototype.forEach.call(opened.querySelectorAll("img"), function (img) {
-        if (img.complete || img.currentSrc) return;
-        img.loading = "eager";
-        img.src = img.getAttribute("src");
-      });
-    }
-
-    if (opts.focus) tabs[index].focus();
-    if (opts.scroll !== false) window.scrollTo(0, 0);
-    if (opts.hash !== false) {
-      try {
-        window.history.replaceState(null, "", "#" + name);
-      } catch (error) {
-        /* file:// o contextos sin history: no es crítico */
-      }
-    }
-  }
-
-  if (tablist && tabs.length) {
-    tabs.forEach(function (tab, i) {
-      tab.addEventListener("click", function () {
-        activate(TABS[i]);
-      });
-
-      // Navegación con teclado del patrón ARIA de tabs.
-      tab.addEventListener("keydown", function (event) {
-        var next = null;
-        if (event.key === "ArrowRight") next = (i + 1) % tabs.length;
-        else if (event.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
-        else if (event.key === "Home") next = 0;
-        else if (event.key === "End") next = tabs.length - 1;
-        if (next === null) return;
-        event.preventDefault();
-        activate(TABS[next], { focus: true });
-      });
-    });
-
-    // Cualquier enlace con data-tab cambia de pestaña en lugar de saltar.
-    document.addEventListener("click", function (event) {
-      var trigger = event.target.closest ? event.target.closest("[data-tab]") : null;
-      if (!trigger) return;
-      var name = trigger.getAttribute("data-tab");
-      if (indexOfTab(name) < 0) return;
-      event.preventDefault();
-      activate(name);
-    });
-
-    window.addEventListener("hashchange", function () {
-      var name = (location.hash || "").replace("#", "");
-      activate(ALIAS[name] || name, { scroll: false, hash: false });
-    });
-
-    var initial = (location.hash || "").replace("#", "");
-    activate(ALIAS[initial] || (indexOfTab(initial) >= 0 ? initial : "inicio"), {
-      scroll: false,
-      hash: false
-    });
-  }
-
-  /* ============================ FONDO ANIMADO ============================
-     Preset "noir" (plata neutra): la página es monocroma, el shader suma luz
-     blanca sobre la foto con mix-blend-mode: screen desde el CSS. */
-  var heroGlow = document.getElementById("hero-glow");
-  if (heroGlow && window.LightRipple) {
+  /* ============================ FONDO ANIMADO (rojo) ============================ */
+  var glow = $("#hero-glow");
+  if (glow && window.LightRipple) {
     try {
-      window.LightRipple.mount(heroGlow, {
-        preset: "noir",
-        energy: "balanced",
-        lineWidth: 0.0035,
-        brightness: 1.1
-      });
+      window.LightRipple.mount(glow, { preset: "crimson", energy: "balanced", lineWidth: 0.0035, brightness: 0.95 });
     } catch (error) {
       if (window.console) console.warn("El fondo animado no se pudo iniciar:", error.message);
     }
   }
 
-  /* ============================ FICHA TÉCNICA ============================
-     "Agregar al carrito" marca el equipo en el contador de arriba;
-     "Cotizar" arma el mensaje con lo seleccionado. */
-
-  var cart = [];
-  var cartCount = document.getElementById("cart-count");
-  var cartIndicator = document.getElementById("cart-indicator");
-  var addButton = document.getElementById("add-to-cart");
-  var quoteButton = document.getElementById("quote-selection");
-  var topbarQuote = document.getElementById("topbar-quote");
-  var fichaStatus = document.getElementById("ficha-status");
-  var FICHA = {
-    sku: "MDP-250-48V",
-    nombre: "MDP-250 Eléctrico (2.500 kg, elevación 4,50 m)"
-  };
-
-  function renderCart() {
-    if (cartCount) cartCount.textContent = String(cart.length);
-    if (cartIndicator) cartIndicator.classList.toggle("is-on", cart.length > 0);
+  /* ============================ APARICIÓN AL HACER SCROLL ============================ */
+  var rv = $$(".rv");
+  rv.forEach(function (el) {
+    // Escalonado entre hermanos para que los bloques entren en cascada.
+    var i = $$(".rv", el.parentNode).indexOf(el);
+    el.style.setProperty("--d", Math.max(0, i) * 0.09 + "s");
+  });
+  if (hasIO && !reduce) {
+    var ioRv = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        ioRv.unobserve(e.target);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    rv.forEach(function (el) { ioRv.observe(el); });
+  } else {
+    rv.forEach(function (el) { el.classList.add("in"); });
   }
 
-  function quoteText() {
-    var lineas = ["Hola, quiero cotizar un alquiler de montacargas.", ""];
-    if (cart.length) {
-      lineas.push("Equipos seleccionados:");
-      cart.forEach(function (item) { lineas.push(" · " + item.nombre + " [" + item.sku + "]"); });
-      lineas.push("");
-    } else {
-      lineas.push("Equipo: " + FICHA.nombre + " [" + FICHA.sku + "]");
-      lineas.push("");
+  /* ============================ CONTADORES ============================ */
+  var counters = $$("[data-to]");
+  function countUp(el) {
+    var to = parseFloat(el.getAttribute("data-to")) || 0;
+    var suffix = el.getAttribute("data-suffix") || "";
+    var t0 = null;
+    function step(t) {
+      if (t0 === null) t0 = t;
+      var k = Math.min(1, (t - t0) / 1100);
+      var eased = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(to * eased) + suffix;
+      if (k < 1) requestAnimationFrame(step);
     }
-    lineas.push("Plazo: Por hora o jornada (mínimo 4 h)");
-    lineas.push("Detalle: ");
-    return lineas.join("\n");
+    requestAnimationFrame(step);
+  }
+  if (hasIO && !reduce) {
+    var ioCount = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        countUp(e.target);
+        ioCount.unobserve(e.target);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function (el) { ioCount.observe(el); });
   }
 
-  if (addButton) {
-    addButton.addEventListener("click", function () {
-      if (cart.some(function (item) { return item.sku === FICHA.sku; })) {
-        if (fichaStatus) {
-          fichaStatus.textContent = "Ya está en tu selección (" + cart.length + ").";
-          fichaStatus.classList.add("is-ok");
-        }
-        return;
+  /* ============================ BARRA DE PROGRESO ============================ */
+  var progress = $("#progress");
+  var ticking = false;
+  function updateProgress() {
+    ticking = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.scrollY / max) : 0).toFixed(4) + ")";
+  }
+  window.addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(updateProgress); }
+  }, { passive: true });
+  updateProgress();
+
+  /* ============================ REACCIONES AL MOUSE ============================ */
+  if (fine && !reduce) {
+    var hero = $(".hero");
+    var photo = $(".hero__photo");
+    var em = $("#hero-em");
+    var finalSection = $("#cotizar");
+    var cursor = $("#cursor");
+    var heroVisible = true;
+    var finalVisible = false;
+    var p = { x: window.innerWidth / 2, y: window.innerHeight / 2, sx: window.innerWidth / 2, sy: window.innerHeight / 2 };
+    var running = false;
+
+    if (hasIO) {
+      new IntersectionObserver(function (en) { heroVisible = en[0].isIntersecting; }).observe(hero);
+      new IntersectionObserver(function (en) { finalVisible = en[0].isIntersecting; }).observe(finalSection);
+    }
+
+    function loop() {
+      // Seguimiento suave: el cursor "persigue" al puntero en vez de pegarse a él.
+      p.sx += (p.x - p.sx) * 0.16;
+      p.sy += (p.y - p.sy) * 0.16;
+      cursor.style.transform = "translate3d(" + p.sx.toFixed(1) + "px," + p.sy.toFixed(1) + "px,0)";
+
+      if (heroVisible) {
+        var r = hero.getBoundingClientRect();
+        var nx = (p.sx - r.left) / r.width - 0.5;
+        var ny = (p.sy - r.top) / r.height - 0.5;
+        hero.style.setProperty("--mx", (p.sx - r.left).toFixed(0) + "px");
+        hero.style.setProperty("--my", (p.sy - r.top).toFixed(0) + "px");
+        photo.style.transform = "translate3d(" + (-nx * 26).toFixed(1) + "px," + (-ny * 16).toFixed(1) + "px,0) scale(1.06)";
+        var er = em.getBoundingClientRect();
+        em.style.setProperty("--ex", (p.sx - er.left).toFixed(0) + "px");
+        em.style.setProperty("--ey", (p.sy - er.top).toFixed(0) + "px");
       }
-      cart.push({ sku: FICHA.sku, nombre: FICHA.nombre });
-      renderCart();
-      if (fichaStatus) {
-        fichaStatus.textContent = "Agregado a tu selección · " + cart.length + " equipo" + (cart.length === 1 ? "" : "s") + " marcado" + (cart.length === 1 ? "" : "s") + ".";
-        fichaStatus.classList.add("is-ok");
-      }
-      if (addButton.firstChild) addButton.firstChild.textContent = "Agregado ";
+      if (finalVisible) finalSection.style.setProperty("--fx", (p.sx / window.innerWidth * 100).toFixed(1) + "%");
+
+      if (Math.abs(p.x - p.sx) + Math.abs(p.y - p.sy) > 0.15) requestAnimationFrame(loop);
+      else running = false;
+    }
+
+    window.addEventListener("pointermove", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      p.x = e.clientX; p.y = e.clientY;
+      cursor.classList.add("on");
+      if (!running) { running = true; requestAnimationFrame(loop); }
+    }, { passive: true });
+    document.documentElement.addEventListener("pointerleave", function () { cursor.classList.remove("on"); });
+
+    // El anillo crece sobre todo lo que se puede tocar.
+    document.addEventListener("pointerover", function (e) {
+      cursor.classList.toggle("is-hot", !!(e.target.closest && e.target.closest("a, button, .rows__item, .reach__zones li")));
     });
-  }
 
-  if (quoteButton) {
-    quoteButton.addEventListener("click", function () {
-      var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(quoteText());
-      var opened = window.open(url, "_blank", "noopener");
-      if (fichaStatus) {
-        fichaStatus.textContent = opened ? "Abrimos WhatsApp con la ficha y tu selección." : "No pudimos abrir WhatsApp.";
-        fichaStatus.classList.toggle("is-ok", !!opened);
-      }
+    // Botones magnéticos: se inclinan hacia el puntero y vuelven al soltarlo.
+    $$(".mag").forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        var b = el.getBoundingClientRect();
+        var dx = e.clientX - (b.left + b.width / 2);
+        var dy = e.clientY - (b.top + b.height / 2);
+        el.style.transform = "translate(" + (dx * 0.22).toFixed(1) + "px," + (dy * 0.32).toFixed(1) + "px)";
+      });
+      el.addEventListener("pointerleave", function () { el.style.transform = ""; });
     });
-  }
 
-  if (topbarQuote) {
-    topbarQuote.addEventListener("click", function (event) {
-      if (!cart.length) return; // sin selección, el enlace normal de WhatsApp manda
-      event.preventDefault();
-      window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(quoteText()), "_blank", "noopener");
-    });
-  }
-
-  renderCart();
-
-  /* ============================ FORMULARIO → WHATSAPP ============================ */
-
-  var form = document.getElementById("quote-form");
-  var status = document.getElementById("form-status");
-
-  if (form) {
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      var data = new FormData(form);
-      var nombre = (data.get("nombre") || "").toString().trim();
-      var telefono = (data.get("telefono") || "").toString().trim();
-
-      var missing = [];
-      if (!nombre) missing.push("nombre");
-      if (!telefono) missing.push("teléfono");
-
-      if (missing.length) {
-        status.textContent = "Falta completar: " + missing.join(" y ") + ".";
-        var firstEmpty = form.querySelector(missing[0] === "nombre" ? "#nombre" : "#telefono");
-        if (firstEmpty) firstEmpty.focus();
-        return;
-      }
-
-      var lineas = [
-        "Hola, quiero cotizar un alquiler de montacargas.",
-        "",
-        "Nombre: " + nombre,
-        "Empresa: " + ((data.get("empresa") || "").toString().trim() || "—"),
-        "Teléfono: " + telefono,
-        "Equipo: " + (data.get("equipo") || "—"),
-        "Plazo: " + (data.get("plazo") || "—"),
-        "Detalle: " + ((data.get("detalle") || "").toString().trim() || "—")
-      ];
-
-      var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(lineas.join("\n"));
-      var opened = window.open(url, "_blank", "noopener");
-      status.textContent = opened
-        ? "Abrimos WhatsApp con tu consulta lista para enviar."
-        : "No pudimos abrir WhatsApp: escribinos a wa.me/" + WHATSAPP_NUMBER;
+    // Las filas iluminan en rojo justo donde está el puntero.
+    $$(".rows__item").forEach(function (el) {
+      el.addEventListener("pointermove", function (e) {
+        el.style.setProperty("--rx", (e.clientX - el.getBoundingClientRect().left) + "px");
+      });
     });
   }
 
   /* ============================ AÑO ============================ */
-
-  var year = document.getElementById("year");
+  var year = $("#year");
   if (year) year.textContent = String(new Date().getFullYear());
 })();
