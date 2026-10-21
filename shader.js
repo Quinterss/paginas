@@ -37,6 +37,7 @@
     "uniform vec2 resolution;",
     "uniform float time;",
     "uniform float uLineWidth;",
+    "uniform float uGrid;",
     "uniform float uDispersion;",
     "uniform vec3 uTint;",
     "uniform float uUseTint;",
@@ -50,7 +51,7 @@
     "    for (int i = 0; i < 5; i++) {",
     "      color[j] += uLineWidth * float(i * i) /",
     "        abs(fract(t - uDispersion * float(j) + float(i) * 0.01) * 5.0",
-    "            - length(uv) + mod(uv.x + uv.y, 0.2));",
+    "            - length(uv) + mod(uv.x + uv.y, uGrid));",
     "    }",
     "  }",
     "  float mono = (color.r + color.g + color.b) / 3.0;",
@@ -80,6 +81,7 @@
     var params = {
       speed: typeof opts.speed === "number" ? opts.speed : SPEEDS[opts.energy] || SPEEDS.balanced,
       lineWidth: typeof opts.lineWidth === "number" ? opts.lineWidth : 0.002,
+      grid: typeof opts.grid === "number" ? opts.grid : 0.2,
       dispersion: typeof opts.dispersion === "number" ? opts.dispersion : 0.01,
       tint: opts.tint || null,
       brightness: typeof opts.brightness === "number" ? opts.brightness : 1
@@ -126,6 +128,7 @@
       resolution: gl.getUniformLocation(program, "resolution"),
       time: gl.getUniformLocation(program, "time"),
       uLineWidth: gl.getUniformLocation(program, "uLineWidth"),
+      uGrid: gl.getUniformLocation(program, "uGrid"),
       uDispersion: gl.getUniformLocation(program, "uDispersion"),
       uTint: gl.getUniformLocation(program, "uTint"),
       uUseTint: gl.getUniformLocation(program, "uUseTint"),
@@ -134,6 +137,7 @@
 
     function applyUniforms() {
       gl.uniform1f(uniforms.uLineWidth, params.lineWidth);
+      gl.uniform1f(uniforms.uGrid, params.grid);
       gl.uniform1f(uniforms.uDispersion, params.dispersion);
       gl.uniform3fv(uniforms.uTint, params.tint || [1, 1, 1]);
       gl.uniform1f(uniforms.uUseTint, params.tint ? 1.0 : 0.0);
@@ -206,6 +210,7 @@
         var merged = next || {};
         if (typeof merged.speed === "number") { params.speed = merged.speed; if (!motionQuery || !motionQuery.matches) effectiveSpeed = merged.speed; }
         if (typeof merged.lineWidth === "number") params.lineWidth = merged.lineWidth;
+        if (typeof merged.grid === "number") params.grid = merged.grid;
         if (typeof merged.dispersion === "number") params.dispersion = merged.dispersion;
         if (typeof merged.brightness === "number") params.brightness = merged.brightness;
         if ("tint" in merged) params.tint = merged.tint;

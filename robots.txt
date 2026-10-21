@@ -1,0 +1,9 @@
+# Santa Victoria — alquiler de montacarga
+# Si cambia el dominio, actualizá también el Sitemap y el canonical de index.html.
+
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+Disallow: /.vercel/
+
+Sitemap: https://paginas-one-omega.vercel.app/sitemap.xml

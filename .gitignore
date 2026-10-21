@@ -14,5 +14,8 @@ Desktop.ini
 # Dependencias
 node_modules/
 
+# Capturas de referencia (material de trabajo)
+screenshots/
+
 .vercel
 .env*

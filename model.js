@@ -1,17 +1,15 @@
 /* model.js — Montacargas 3D: el scroll lleva la cámara por cuatro zonas de la máquina
  * (zoom + rotación) y cada zona muestra un dato. El mouse suma un parallax suave.
  *
- * Modelo: "Forklift" de KolosStudios vía Poly Pizza (Creative Commons Attribution).
- * Three.js r160 local: el sitio no pide nada a terceros.
+ * Modelo: SV-250 armado en código (forklift.js) con geometría suave y materiales PBR,
+ * sin assets externos ni dependencias de terceros. Three.js r160 local.
  *
  * El modelo se orienta solo (largo sobre X, uñas hacia +X), así que las zonas de KEYS
- * se definen en coordenadas del equipo y sirven aunque cambies el .glb por otro.
+ * se definen en coordenadas del equipo y sirven aunque cambies la geometría.
  */
 
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-const MODEL_URL = "assets/model/forklift.glb";
+import { createForklift } from "./forklift.js";
 
 /* ============================ AJUSTES ============================
  * FLIP_FRONT  → true si las uñas quedan del lado contrario al esperado.
@@ -23,10 +21,10 @@ const MODEL_URL = "assets/model/forklift.glb";
 const FLIP_FRONT = false;
 const KEYS = [
   { tag: "Vista general",       az: -0.75, el: 0.22, zoom: 1.0, at: [0.0, 0.45, 0] },
-  { tag: "Mástil y uñas",       az: -0.25, el: 0.10, zoom: 2.2, at: [0.72, 0.42, 0] },
-  { tag: "Cabina y controles",  az: 1.45,  el: 0.40, zoom: 1.9, at: [-0.05, 0.62, 0] },
-  { tag: "Batería y contrapeso", az: 2.65, el: 0.16, zoom: 2.0, at: [-0.78, 0.38, 0] },
-  { tag: "Radio de giro",       az: 3.95,  el: 0.06, zoom: 2.3, at: [-0.6, 0.12, 0] }
+  { tag: "Mástil y uñas",       az: -0.25, el: 0.12, zoom: 1.2,  at: [0.6, 0.5, 0] },
+  { tag: "Cabina y controles",  az: 1.45,  el: 0.40, zoom: 1.55, at: [-0.05, 0.62, 0] },
+  { tag: "Batería y contrapeso", az: 2.65, el: 0.18, zoom: 1.6,  at: [-0.78, 0.42, 0] },
+  { tag: "Radio de giro",       az: 3.95,  el: 0.08, zoom: 1.75, at: [-0.55, 0.18, 0] }
 ];
 
 const stage = document.getElementById("stage");
@@ -86,7 +84,7 @@ if (stage && canvas && section) {
       };
       panel(6, 2.4, 0xffffff, 7, [0, 3.2, 0]);
       panel(1.6, 3.4, 0xffffff, 4, [-5, 1, 2.5]);
-      panel(1.4, 3.4, 0xff2a38, 5, [5, 0.8, -3]);
+      panel(1.4, 3.4, 0xff3a40, 2.6, [5, 0.8, -3]);
       panel(7, 0.7, 0xffffff, 1.4, [0, -3.2, 0]);
       const pmrem = new THREE.PMREMGenerator(renderer);
       const target = pmrem.fromScene(env, 0.035);
@@ -95,7 +93,7 @@ if (stage && canvas && section) {
     })();
     scene.environment = studio;
 
-    const key = new THREE.DirectionalLight(0xffffff, 2.8);
+    const key = new THREE.DirectionalLight(0xffffff, 3.1);
     key.position.set(4, 5.5, -3); // adelante-derecha de la cámara
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
@@ -104,7 +102,7 @@ if (stage && canvas && section) {
     key.shadow.normalBias = 0.02;
     const fill = new THREE.DirectionalLight(0x9dbcff, 0.55);
     fill.position.set(3, 1.2, 3);
-    const rim = new THREE.DirectionalLight(0xff2a38, 2.6); // contraluz rojo
+    const rim = new THREE.DirectionalLight(0xff3a40, 1.5); // contraluz rojo
     rim.position.set(-4, 1.8, 2.5);
     rig.add(key, fill, rim, new THREE.HemisphereLight(0xffffff, 0x20232b, 0.35));
 
@@ -133,26 +131,6 @@ if (stage && canvas && section) {
     halo.rotation.x = -Math.PI / 2;
     halo.position.y = 0.001;
     scene.add(halo);
-
-    /* Materiales: según el color de origen se reparte goma, pintura (con barniz) o acero. */
-    const upgrade = (src) => {
-      const color = src.color ? src.color.clone() : new THREE.Color(0x888888);
-      const hsl = {};
-      color.getHSL(hsl);
-      const lum = color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722;
-      let look;
-      if (src.map) look = { metalness: 0.2, roughness: 0.42, clearcoat: 0.5, clearcoatRoughness: 0.25 };
-      else if (lum < 0.035) look = { metalness: 0, roughness: 0.9 };                                          // neumáticos
-      else if (hsl.s > 0.35) look = { metalness: 0.25, roughness: 0.34, clearcoat: 0.9, clearcoatRoughness: 0.16 }; // pintura
-      else look = { metalness: 0.8, roughness: 0.38 };                                                          // acero
-      const mat = new THREE.MeshPhysicalMaterial({
-        color, map: src.map || null, normalMap: src.normalMap || null, aoMap: src.aoMap || null,
-        vertexColors: !!src.vertexColors, side: src.side, transparent: src.transparent, opacity: src.opacity,
-        envMapIntensity: 1.15, ...look
-      });
-      if (mat.map) { mat.map.colorSpace = THREE.SRGBColorSpace; mat.map.anisotropy = renderer.capabilities.getMaxAnisotropy(); }
-      return mat;
-    };
 
     /* Orienta y centra el modelo sin conocer su exportación: escala, apoya el largo sobre X y
        decide cuál extremo son las uñas (el que, en su último 10%, es más bajo que el opuesto). */
@@ -193,27 +171,18 @@ if (stage && canvas && section) {
       dims.L = final.x; dims.H = final.y; dims.W = final.z;
     };
 
-    new GLTFLoader().load(
-      MODEL_URL,
-      (gltf) => {
-        const object = gltf.scene;
-        object.traverse((node) => {
-          if (!node.isMesh) return;
-          node.material = Array.isArray(node.material) ? node.material.map(upgrade) : upgrade(node.material);
-          node.castShadow = true;
-          node.receiveShadow = true;
-        });
-        orient(object);
-        modelReady = true;
-        section.classList.add("showcase--ready");
-        resize();
-      },
-      undefined,
-      () => {
-        section.classList.add("showcase--fallback");
-        canvas.hidden = true;
-      }
-    );
+    try {
+      orient(createForklift());
+      modelReady = true;
+      section.classList.add("showcase--ready");
+      resize();
+    } catch (error) {
+      // Si el 3D no puede armarse, queda la foto de respaldo y la pantalla de carga avisa.
+      section.classList.add("showcase--fallback");
+      canvas.hidden = true;
+      if (window.__loader) window.__loader.fail();
+      if (window.console) console.warn("El modelo 3D no se pudo armar:", error && error.message);
+    }
   }
 
   /* ============================ tamaño y encuadre ============================ */
@@ -228,7 +197,7 @@ if (stage && canvas && section) {
     if (renderer) renderer.setSize(w, h, false);
     const t = Math.tan(THREE.MathUtils.degToRad(camera.fov) * 0.5);
     // Distancia que deja la máquina completa dentro del cuadro (más aire en escritorio por el desplazamiento).
-    dims.fit = Math.max((dims.H * 0.5) / t, (Math.max(dims.L, dims.W) * 0.5) / (t * camera.aspect)) * (wide ? 1.7 : 1.3);
+    dims.fit = Math.max((dims.H * 0.5) / t, (Math.max(dims.L, dims.W) * 0.5) / (t * camera.aspect)) * (wide ? 1.7 : 1.1);
   }
 
   /* ============================ scroll + mouse → cámara ============================ */

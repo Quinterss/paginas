@@ -1,9 +1,9 @@
-/* Montacargas del Plata — contacto, fondo animado y reacciones al mouse. */
+/* Santa Victoria — contacto, fondo animado y reacciones al mouse. */
 (function () {
   "use strict";
 
-  var WHATSAPP_NUMBER = "5491140000000"; // ← reemplazar por el número real (formato internacional, sin +)
-  var MENSAJE = "Hola, quiero cotizar un alquiler de montacargas.";
+  // Enlace comercial de Santa Victoria (WhatsApp registrado). Confirmar vigencia antes de publicar.
+  var QUOTE_URL = "https://w.app/santavictoria";
 
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -11,16 +11,85 @@
   var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var hasIO = "IntersectionObserver" in window;
 
+  /* ============================ PANTALLA DE CARGA ============================ */
+  // Los mensajes acompañan la espera; si algo falla, se avisa en vez de mostrar "Error".
+  var loader = $("#loader");
+  if (loader) {
+    var lMsg = $("#loader-msg");
+    var lBar = $("#loader-bar");
+    var MESSAGES = ["Preparando todo", "Casi listo", "Optimizando la experiencia"];
+    var ERROR_MESSAGE = "Estamos trabajando para solucionarlo";
+    var lProg = 0, lTarget = 0, lFailed = false, lHidden = false;
+
+    document.documentElement.classList.add("is-loading");
+
+    function paintLoader() {
+      if (lBar) lBar.style.transform = "scaleX(" + lProg.toFixed(3) + ")";
+      if (!lMsg) return;
+      var text = lFailed ? ERROR_MESSAGE : lProg < 0.45 ? MESSAGES[0] : lProg < 0.78 ? MESSAGES[1] : MESSAGES[2];
+      if (lMsg.textContent !== text) lMsg.textContent = text;
+    }
+
+    function hideLoader() {
+      if (lHidden) return;
+      lHidden = true;
+      lProg = 1;
+      paintLoader();
+      loader.classList.add("loader--out");
+      document.documentElement.classList.remove("is-loading");
+      setTimeout(function () {
+        loader.remove();
+        loader = null;
+      }, 700);
+    }
+
+    // Un recurso que no cargó no rompe la página: se avisa y se sigue igual.
+    function failLoader() {
+      if (lHidden || lFailed) return;
+      lFailed = true;
+      paintLoader();
+      setTimeout(hideLoader, 2200);
+    }
+
+    paintLoader();
+    var t0 = (window.performance || Date).now();
+    (function advance(t) {
+      if (lHidden) return;
+      var elapsed = t - t0;
+      // Progreso asintótico: nunca se queda quieto, pero tampoco miente llegando al 100%.
+      lTarget = Math.max(lTarget, Math.min(0.92, 1 - Math.exp(-elapsed / 900)));
+      lProg += (lTarget - lProg) * 0.12;
+      paintLoader();
+      requestAnimationFrame(advance);
+    })(t0);
+
+    if (document.readyState === "complete") {
+      setTimeout(hideLoader, 600);
+    } else {
+      window.addEventListener("load", function () { setTimeout(hideLoader, 600); }, { once: true });
+    }
+    // Red de seguridad: la pantalla nunca tapa el sitio.
+    setTimeout(hideLoader, 9000);
+    window.addEventListener("error", function (event) {
+      if (event && event.target && event.target !== window) failLoader();
+    }, true);
+    window.addEventListener("unhandledrejection", failLoader);
+    window.__loader = { fail: failLoader, hide: hideLoader };
+  }
+
   /* ============================ CONTACTO ============================ */
-  // Un solo número para todos los botones "Cotizar".
-  var quoteUrl = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(MENSAJE);
+  // Un solo enlace para todos los botones "Cotizar".
+  var quoteUrl = QUOTE_URL;
   $$("[data-quote]").forEach(function (a) { a.href = quoteUrl; a.target = "_blank"; a.rel = "noopener"; });
 
   /* ============================ FONDO ANIMADO (rojo) ============================ */
   var glow = $("#hero-glow");
   if (glow && window.LightRipple) {
     try {
-      window.LightRipple.mount(glow, { preset: "crimson", energy: "balanced", lineWidth: 0.0035, brightness: 0.95 });
+      // Mismo rojo de marca, trama fina y deriva lenta: el fondo acompaña sin competir con el texto.
+      window.LightRipple.mount(glow, {
+        tint: [0.8, 0.28, 0.26], energy: "calm", lineWidth: 0.0016, brightness: 0.72, grid: 0.055
+      });
     } catch (error) {
       if (window.console) console.warn("El fondo animado no se pudo iniciar:", error.message);
     }

@@ -1,33 +1,51 @@
 <!doctype html>
-<html lang="es-AR">
+<html lang="es-PE">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alquiler de montacargas con operador en Buenos Aires | Montacargas del Plata</title>
-<meta name="description" content="Alquiler de montacargas de 1,5 a 7 toneladas con operador, seguro y mantenimiento incluidos. Entrega en 24 h en CABA, GBA y La Plata. Cotizá por WhatsApp.">
-<meta name="theme-color" content="#c4161f">
-<meta property="og:title" content="Alquiler de montacargas con operador | Montacargas del Plata">
-<meta property="og:description" content="Flota de 1,5 a 7 t. Por hora, jornada, semana o mes. Entrega en 24 h en AMBA y La Plata.">
+<title>Montacargas en Chimbote y Nuevo Chimbote | Santa Victoria</title>
+<meta name="description" content="Servicio de montacargas para carga, descarga, estiba y movimiento de mercadería en Chimbote y Nuevo Chimbote, Áncash. Equipo de 2,5 toneladas. Consulta disponibilidad y cotiza.">
+<!-- ⚠ Dominio de publicación: si cambias el sitio de dominio, actualízalo aquí, en sitemap.xml y en robots.txt. -->
+<link rel="canonical" href="https://paginas-one-omega.vercel.app/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<!-- Google Search Console: pega aquí la etiqueta <meta name="google-site-verification" ...> que te da Search Console. -->
+<meta name="theme-color" content="#b73d3a">
+<meta property="og:title" content="Montacargas en Chimbote y Nuevo Chimbote | Santa Victoria">
+<meta property="og:description" content="Carga, descarga, estiba y movimiento de mercadería. Montacargas de 2,5 toneladas en Chimbote y Nuevo Chimbote, Áncash.">
+<meta property="og:site_name" content="Santa Victoria">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="es_AR">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23c4161f'/%3E%3Cpath d='M7 21V13h6l3 4h5v4M7 21h14M22 8v13M22 21h4' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<meta property="og:locale" content="es_PE">
+<meta property="og:url" content="https://paginas-one-omega.vercel.app/">
+<meta property="og:image" content="https://paginas-one-omega.vercel.app/assets/brand/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Santa Victoria — servicio de montacargas en Chimbote y Nuevo Chimbote">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="96x96" href="assets/brand/favicon.png">
+<link rel="apple-touch-icon" href="assets/brand/favicon.png">
 <link rel="preload" as="image" href="assets/img/hero.jpg" fetchpriority="high">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.className += " js";</script>
 <script type="importmap">
-{ "imports": { "three": "./assets/vendor/three.module.js", "three/addons/": "./assets/vendor/jsm/" } }
+{ "imports": { "three": "./assets/vendor/three.module.js", "three/addons/": "./assets/vendor/jsm/", "animejs": "./assets/vendor/animejs/index.js" } }
 </script>
 </head>
 <body>
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="loader__inner">
+    <img class="loader__mark" src="assets/brand/sello.png" width="54" height="54" alt="" fetchpriority="high">
+    <p class="loader__brand">Santa Victoria</p>
+    <p class="loader__msg" id="loader-msg">Preparando todo</p>
+    <span class="loader__bar" aria-hidden="true"><i id="loader-bar"></i></span>
+  </div>
+</div>
 <a class="skip-link" href="#flota">Saltar al equipo</a>
 <div class="progress" id="progress" aria-hidden="true"></div>
 <div class="cursor" id="cursor" aria-hidden="true"><i></i></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <symbol id="ic-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3.2l1.8 4.6-2.2 1.3a11.5 11.5 0 0 0 5.3 5.3l1.3-2.2L19 14.8V18a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 3 6.2A2 2 0 0 1 5 4z"/></symbol>
     <symbol id="ic-bubble" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.6c0 4.1-4 7.4-9 7.4a10.6 10.6 0 0 1-2.6-.3L5 20.5l1-3.6A7 7 0 0 1 3 11.6C3 7.5 7 4.2 12 4.2s9 3.3 9 7.4z"/><path d="M8.6 11.6h.01M12 11.6h.01M15.4 11.6h.01"/></symbol>
-    <symbol id="ic-forklift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17v-6h5.2l2.3 3.4H15"/><path d="M3 17h12"/><path d="M17.5 5v12"/><path d="M17.5 17H21"/><circle cx="6.6" cy="19.4" r="1.9"/><circle cx="13.6" cy="19.4" r="1.9"/></symbol>
     <symbol id="ic-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6.5-6 6.5-10.5A6.5 6.5 0 0 0 5.5 10.5C5.5 15 12 21 12 21z"/><circle cx="12" cy="10.4" r="2.4"/></symbol>
     <symbol id="ic-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
   </defs>
@@ -35,13 +53,12 @@
 
 <header class="topbar">
   <div class="wrap topbar__inner">
-    <a class="brand" href="#inicio" aria-label="Montacargas del Plata — inicio">
-      <span class="brand__mark" aria-hidden="true"><svg><use href="#ic-forklift"></use></svg></span>
-      <span>Montacargas del Plata<small>Alquiler</small></span>
+    <a class="brand" href="#inicio" aria-label="Santa Victoria — inicio">
+      <span class="brand__mark" aria-hidden="true"><img src="assets/brand/sello.png" width="573" height="549" alt=""></span>
+      <span>Santa Victoria<small>Alquiler de montacargas</small></span>
     </a>
     <div class="topbar__actions">
-      <a class="iconbtn" href="tel:+5491140000000" aria-label="Llamar" title="Llamar"><svg aria-hidden="true"><use href="#ic-phone"></use></svg></a>
-      <a class="btn btn--red btn--sm mag" data-quote href="https://wa.me/5491140000000" aria-label="Cotizar por WhatsApp">
+      <a class="btn btn--red btn--sm mag" data-quote href="https://w.app/santavictoria" aria-label="Cotizar por WhatsApp">
         <svg class="icon" aria-hidden="true"><use href="#ic-bubble"></use></svg><span>Cotizar</span>
       </a>
     </div>
@@ -57,14 +74,14 @@
     <div class="hero__veil" aria-hidden="true"></div>
     <div class="hero__spot" aria-hidden="true"></div>
     <div class="wrap hero__content">
-      <p class="badge rv"><span class="dot" aria-hidden="true"></span> Disponibilidad inmediata en AMBA y La Plata</p>
-      <h1 class="rv">Alquiler de montacargas <em id="hero-em">con operador y entrega en 24 h</em></h1>
+      <p class="badge rv"><span class="dot" aria-hidden="true"></span> Servicio de montacargas en Chimbote y Nuevo Chimbote</p>
+      <h1 class="rv">Alquiler de montacargas <em id="hero-em">con o sin operador</em></h1>
       <p class="hero__lead rv">
-        Solo alquiler, sin vueltas: usás el equipo para el trabajo que necesites y nosotros cuidamos que llegue
-        listo. Seguro, mantenimiento y guardia técnica incluidos.
+        Un montacargas de 2,5 t para carga, descarga y estiba. Elige la modalidad con o sin operador
+        y coordinamos la llegada a tu operación.
       </p>
       <div class="hero__actions rv">
-        <a class="btn btn--red mag" data-quote href="https://wa.me/5491140000000">
+        <a class="btn btn--red mag" data-quote href="https://w.app/santavictoria">
           <svg class="icon" aria-hidden="true"><use href="#ic-bubble"></use></svg> Cotizar por WhatsApp
         </a>
         <a class="btn btn--onDark mag" href="#flota">
@@ -72,53 +89,16 @@
         </a>
       </div>
       <div class="reach rv">
-        <p class="reach__label"><svg aria-hidden="true"><use href="#ic-pin"></use></svg> Entrega sin costo de logística en</p>
+        <p class="reach__label"><svg aria-hidden="true"><use href="#ic-pin"></use></svg> Zona de atención en Áncash, Perú</p>
         <ul class="reach__zones">
-          <li>CABA</li><li>GBA Norte</li><li>GBA Oeste</li><li>GBA Sur</li><li>La Plata y Berisso</li><li>Escobar y Pilar</li>
+          <li>Chimbote</li><li>Nuevo Chimbote</li><li>Parque Industrial</li><li>Gran Trapecio</li>
         </ul>
-        <p class="reach__far">¿Más lejos? Rosario, Córdoba y Bahía Blanca, con contrato mensual y técnico incluido.</p>
+        <p class="reach__far">¿Tu operación está fuera de estas zonas? Consulta disponibilidad y coordinamos la atención.</p>
       </div>
     </div>
   </section>
 
-  <div class="stats" aria-label="Números de la empresa">
-    <div class="wrap">
-      <div class="stats__inner">
-        <div class="stat rv"><b data-to="120" data-suffix="+">120+</b><span>equipos en flota propia</span></div>
-        <div class="stat rv"><b>24/7</b><span>guardia técnica y despacho</span></div>
-        <div class="stat rv"><b data-to="2" data-suffix=" h">2 h</b><span>respuesta promedio ante fallas</span></div>
-        <div class="stat rv"><b data-to="98" data-suffix="%">98%</b><span>disponibilidad operativa</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="wrap">
-      <div class="section__head rv">
-        <p class="kicker">Por qué nos eligen</p>
-        <h2>Tres razones por las que no te quedás sin máquina</h2>
-      </div>
-      <div class="rows">
-        <article class="rows__item rv">
-          <p class="rows__num">01</p>
-          <h3>Flota propia, no intermediarios</h3>
-          <p>120 equipos y taller propio. Si pedís un reemplazo, no dependemos de un tercero con la agenda llena.</p>
-        </article>
-        <article class="rows__item rv">
-          <p class="rows__num">02</p>
-          <h3>Entrega en 24 a 48 h</h3>
-          <p>Camión rampa y cama baja. El técnico deja el equipo operativo y capacita a tu personal en el momento.</p>
-        </article>
-        <article class="rows__item rv">
-          <p class="rows__num">03</p>
-          <h3>Todo incluido en el abono</h3>
-          <p>Seguro de responsabilidad civil, mantenimiento, repuestos y guardia 24/7. Sin adicionales a fin de mes.</p>
-        </article>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================ FLOTA (3D, secundario) ============================ -->
+  <!-- ============================ EQUIPO 3D (pieza central) ============================ -->
   <section class="showcase" id="flota" aria-label="Equipo de referencia en 3D">
     <div class="showcase__track">
       <div class="showcase__stage" id="stage">
@@ -129,7 +109,7 @@
 
         <div class="showcase__ui">
           <div class="showcase__top">
-            <p class="kicker kicker--light">Flota · Unidad de referencia MDP-250</p>
+            <p class="kicker kicker--light">Equipo · Unidad de referencia SV-250</p>
             <p class="showcase__step" id="model-step">01/05</p>
           </div>
 
@@ -138,8 +118,8 @@
               <p class="datum__idx">Vista general</p>
               <b class="datum__num">2.500 kg</b>
               <h3>Capacidad nominal</h3>
-              <p>Un equipo, cuatro datos que importan. Seguí bajando y recorré la máquina.</p>
-              <ul class="datum__chips"><li>Eléctrico 1,5 t</li><li>GLP 2,5 t</li><li>Diésel 3,5 t</li><li>Todoterreno 7 t</li></ul>
+              <p>Un solo equipo, cuatro datos que importan. Sigue bajando y recorre la máquina.</p>
+              <ul class="datum__chips"><li>2,5 t</li><li>Carga y descarga</li><li>Estiba</li><li>Con o sin operador</li></ul>
             </article>
             <article class="datum">
               <p class="datum__idx">01 · Mástil y uñas</p>
@@ -169,26 +149,89 @@
 
           <ol class="ticks" id="ticks" aria-hidden="true"><li class="on"></li><li></li><li></li><li></li><li></li></ol>
         </div>
-        <p class="showcase__cue" id="cue">Seguí bajando <svg aria-hidden="true"><use href="#ic-down"></use></svg></p>
+        <p class="showcase__cue" id="cue">Sigue bajando <svg aria-hidden="true"><use href="#ic-down"></use></svg></p>
       </div>
     </div>
   </section>
+
+  <div class="stats" aria-label="Datos del servicio">
+    <div class="wrap">
+      <div class="stats__inner">
+        <div class="stat rv"><b data-to="1">1</b><span>montacargas en operación</span></div>
+        <div class="stat rv"><b>2,5 t</b><span>capacidad nominal</span></div>
+        <div class="stat rv"><b data-to="100" data-suffix=" %">100 %</b><span>disponibilidad operativa</span></div>
+        <div class="stat rv"><b>Inmediata</b><span>respuesta ante fallas</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ MODALIDADES ============================ -->
+  <div class="section section--modes" id="modalidades">
+    <div class="wrap">
+      <div class="section__head rv">
+        <p class="kicker">Dos formas de alquilar</p>
+        <h2>Con operador o sin operador</h2>
+        <p class="section__lead">
+          Es el mismo montacargas de 2,5 t, pero cambia quién lo maneja. Cada modalidad tiene su tarifa:
+          cuéntanos qué tienes que mover y cotizamos la modalidad que más te convenga.
+        </p>
+      </div>
+      <div class="modes">
+        <article class="mode rv">
+          <p class="mode__idx">01</p>
+          <h3>Con operador</h3>
+          <p>Vamos con el equipo y una persona a cargo de la maniobra. Sirve cuando tu operación no cuenta con un operador propio disponible.</p>
+          <ul class="mode__list"><li>Equipo + operador</li></ul>
+          <a class="mode__cta" data-quote href="https://w.app/santavictoria">Consultar tarifa <svg aria-hidden="true"><use href="#ic-down"></use></svg></a>
+        </article>
+        <article class="mode rv">
+          <p class="mode__idx">02</p>
+          <h3>Sin operador</h3>
+          <p>Solo el montacargas, para que lo opere tu propio personal. Pensado para operaciones que ya cuentan con quien lo maneje.</p>
+          <ul class="mode__list"><li>Solo el equipo</li><li>Tarifa distinta</li></ul>
+          <a class="mode__cta" data-quote href="https://w.app/santavictoria">Consultar tarifa <svg aria-hidden="true"><use href="#ic-down"></use></svg></a>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ POR QUÉ NOS ELIGEN ============================ -->
+  <div class="section">
+    <div class="wrap">
+      <div class="section__head rv">
+        <p class="kicker">Por qué nos eligen</p>
+        <h2>Tres razones para no quedarte sin equipo</h2>
+      </div>
+      <div class="rows">
+        <article class="rows__item rv">
+          <p class="rows__num">01</p>
+          <h3>Un solo equipo, siempre el mismo</h3>
+          <p>Trabajamos con un montacargas de 2,5 t. No dependemos de terceros ni de intermediarios: el equipo que cotizas es el mismo que llega a tu operación.</p>
+        </article>
+        <article class="rows__item rv">
+          <p class="rows__num">02</p>
+          <h3>Respuesta inmediata ante fallas</h3>
+          <p>Si el equipo se detiene, lo atendemos en el momento. La idea es simple: que tu carga no espere.</p>
+        </article>
+        <article class="rows__item rv">
+          <p class="rows__num">03</p>
+          <h3>Disponibilidad operativa 100 %</h3>
+          <p>Un único equipo, cuidado y disponible: cuando lo necesitas, está operativo para tu trabajo.</p>
+        </article>
+      </div>
+    </div>
+  </div>
 
   <!-- ============================ CIERRE: botón de contacto ============================ -->
   <section class="final" id="cotizar">
     <div class="wrap final__inner">
       <p class="kicker kicker--light rv">¿Te convenció el equipo?</p>
-      <h2 class="rv">Contanos qué tenés que mover y te cotizamos hoy</h2>
+      <h2 class="rv">Cuéntanos qué tienes que mover y preparamos tu cotización</h2>
       <div class="final__actions rv">
-        <a class="btn btn--red btn--xl mag" data-quote href="https://wa.me/5491140000000">
+        <a class="btn btn--red btn--xl mag" data-quote href="https://w.app/santavictoria">
           <svg class="icon" aria-hidden="true"><use href="#ic-bubble"></use></svg> Cotizar por WhatsApp
         </a>
-        <a class="iconbtn iconbtn--lg" href="tel:+5491140000000" aria-label="Llamar" title="Llamar"><svg aria-hidden="true"><use href="#ic-phone"></use></svg></a>
       </div>
-      <figure class="quote rv">
-        <blockquote>“Cuando una máquina se paró por una falla hidráulica, en cuatro horas teníamos reemplazo en el depósito y la carga no se detuvo.”</blockquote>
-        <figcaption><strong>Martín Aguirre</strong> · Jefe de Depósito · distribuidora de bebidas, Garín</figcaption>
-      </figure>
     </div>
   </section>
 </main>
@@ -196,24 +239,24 @@
 <footer class="footer">
   <div class="wrap">
     <div class="footer__row">
-      <a class="brand" href="#inicio" aria-label="Montacargas del Plata — inicio">
-        <span class="brand__mark" aria-hidden="true"><svg><use href="#ic-forklift"></use></svg></span>
-        <span>Montacargas del Plata<small>Alquiler</small></span>
+      <a class="brand brand--logo" href="#inicio" aria-label="Santa Victoria — inicio">
+        <img src="assets/brand/logotipo-claro.png" width="548" height="85" alt="Santa Victoria — alquiler de montacarga" loading="lazy" decoding="async">
       </a>
-      <p>Av. Circunvalación 2450, Garín · lun a sáb 8–18 h ·
-        <a href="mailto:ventas@montacargasdelplata.com.ar">ventas@montacargasdelplata.com.ar</a></p>
+      <p>Chimbote y Nuevo Chimbote, Áncash, Perú ·
+        <a href="mailto:santa.victoria.anto@gmail.com">santa.victoria.anto@gmail.com</a></p>
     </div>
     <details class="credits">
       <summary>Créditos de imágenes y modelo</summary>
       <ul>
         <li><a href="https://commons.wikimedia.org/wiki/File:200321-N-NN369-2007_(49694488346).jpg">Hero</a> — Navy Medicine (dominio público).</li>
         <li><a href="https://commons.wikimedia.org/wiki/File:Toyota_forklift.jpg">Imagen de respaldo</a> — Toyota forklift, CC BY-SA 3.0.</li>
-        <li>Modelo 3D: <a href="https://poly.pizza/m/DTQBuenKJY">"Forklift" de KolosStudios</a> vía Poly Pizza, Creative Commons Attribution.</li>
+        <li>Modelo 3D: montacargas SV-250 reconstruido en código con Three.js (sin assets externos).</li>
+        <li>Identidad de marca: archivos de Santa Victoria (<code>assets/brand/originales</code>).</li>
       </ul>
     </details>
     <div class="footer__bottom">
-      <span>© <span id="year">2026</span> Montacargas del Plata</span>
-      <span>Precios de referencia sujetos a cotización. Datos de ejemplo.</span>
+      <span>© <span id="year">2026</span> Santa Victoria</span>
+      <span>Precios de referencia sujetos a cotización.</span>
     </div>
   </div>
 </footer>
